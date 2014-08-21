@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Test</title>
+        <script type="text/javascript" src="d3/d3.v3.js"></script>
+		<style type="text/css">
+		div.bar {
+			display: inline-block;
+			width: 20px;
+			height: 80px;
+			background-color: teal;
+			margin-right: 2px;
+		}
+
+		svg .pumpkin {
+			fill: yellow;
+			stroke: orange;
+			stroke-width: 5;
+		}
+		</style>
+    </head>
+    <body>
+        <script type="text/javascript">
+		// Generate the dataset
+		var dataset = [];
+		for (var i = 0; i < 25; i++) {
+			var n = Math.round(Math.random() * 30);
+			dataset.push(n);
+		}
+
+		d3.select("body").selectAll("p") // create empty reference for all ps
+			.data(dataset) // execute remaining instructions once for each value
+			.enter() // placeholder refs to new elements
+			.append("p") // add the actual elements
+			.text( function(dat) { return dat; } ) // anon func with d input from data() method
+			.style("color", function(d) {
+				if (d > 10) {
+					return "orange";
+				} else {
+					return "black";
+				}
+			});
+
+		// Graph the dataset
+		d3.select("body").selectAll("div")
+			.data(dataset)
+			.enter()
+			.append("div")
+			.attr("class", "bar")
+			.style("height", function(d) {
+				var barHeight = d * 5;
+				return barHeight + "px"; 
+			});
+        </script>
+
+		<!-- testing out some svg -->
+		<svg width = "500" height = "500">
+		<ellipse cx="250" cy="270" rx="120" ry="150" class="pumpkin"/>
+		<text x="250" y="25" font-family="sans-serif" font-size="16" fill="green">
+		taco & salsa
+		</text>
+		</svg>
+		
+		<script type="text/javascript">
+		// More d3 for svgs
+		var w = 500;
+		var h = 50;
+		svg = d3.select("body").append("svg");
+		svg.attr("width", w).attr("height", h);
+
+		// bind circles to dataset
+		var circles = svg.selectAll("circle")
+			.data(dataset)
+			.enter()
+			.append("circle");
+:
+		circles.attr("class", "pumpkin")
+				.attr("cx", function(d, i) {
+						return i * 50 + 25;
+					})
+				.attr("cy", h/2)
+				.attr("r", function(d) {
+						return d;
+					});
+		</script>
+    </body>
+</html>
